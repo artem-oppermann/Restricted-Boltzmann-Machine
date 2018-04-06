@@ -2,7 +2,11 @@ import tensorflow as tf
 import os
 
 
-def _get_training_data(FLAGS):
+def _get_training_data(FLAGS):  
+    ''' Buildind the input pipeline for training and inference using TFRecords files.
+    @return data only for the training
+    @return data for the inference
+    '''
     
     filenames=[FLAGS.tf_records_train_path+f for f in os.listdir(FLAGS.tf_records_train_path)]
     
@@ -23,8 +27,8 @@ def _get_training_data(FLAGS):
     return dataset, dataset2
     
 
-
 def _get_test_data(FLAGS):
+    ''' Buildind the input pipeline for test data.'''
     
     filenames=[FLAGS.tf_records_test_path+f for f in os.listdir(FLAGS.tf_records_test_path)]
     
@@ -38,11 +42,10 @@ def _get_test_data(FLAGS):
     return dataset
 
 
-
-
 def parse(serialized):
+    ''' Parser fot the TFRecords file.'''
     
-    features={'movie_ratings':tf.FixedLenFeature([1682], tf.float32),  
+    features={'movie_ratings':tf.FixedLenFeature([3952], tf.float32),  
               }
     
     

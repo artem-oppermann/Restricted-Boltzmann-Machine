@@ -4,8 +4,8 @@ import os
 import sys
 from preprocess_data import _get_dataset
 
-OUTPUT_DIR_TRAIN='C:/Users/Admin/Desktop/deep_learning _local_datasets/colaborative filtering/tf_records_100k/train'
-OUTPUT_DIR_TEST='C:/Users/Admin/Desktop/deep_learning _local_datasets/colaborative filtering/tf_records_100k/test'
+OUTPUT_DIR_TRAIN='C:/Users/Admin/Desktop/deep_learning _local_datasets/colaborative filtering/tf_records_1M/train'
+OUTPUT_DIR_TEST='C:/Users/Admin/Desktop/deep_learning _local_datasets/colaborative filtering/tf_records_1M/test'
 
 
 def _add_to_tfrecord(data_sample,tfrecord_writer):
@@ -50,7 +50,7 @@ def run(output_dir):
 
     SAMPLES_PER_FILES=100
     
-    training_set, test_set=_get_dataset('100k')
+    training_set, test_set=_get_dataset('1M')
 
     for data_set, name, dir_ in zip([training_set, test_set], ['train', 'test'], output_dir):
         
