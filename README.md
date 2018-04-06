@@ -97,9 +97,4 @@ Restricted Boltzmann Machine implemented for collaborative filtering of movies.
     epoch_nr: 5, batch: 30/188, acc_train: 0.750, acc_test: 0.769
     epoch_nr: 5, batch: 40/188, acc_train: 0.744, acc_test: 0.771
     epoch_nr: 5, batch: 50/188, acc_train: 0.768, acc_test: 0.770
-    epoch_nr: 5, batch: 60/188, acc_train: 0.764, acc_test: 0.745
-    epoch_nr: 5, batch: 70/188, acc_train: 0.759, acc_test: 0.749
-    epoch_nr: 5, batch: 80/188, acc_train: 0.772, acc_test: 0.751
-    epoch_nr: 5, batch: 90/188, acc_train: 0.748, acc_test: 0.763
-    epoch_nr: 5, batch: 100/188, acc_train: 0.769, acc_test: 0.765
-    epoch_nr: 5, batch: 110/188, acc_train: 0.744, acc_test: 0.739
+    
