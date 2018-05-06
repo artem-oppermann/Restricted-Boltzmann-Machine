@@ -35,11 +35,9 @@ class RBM:
 
             a=tf.nn.bias_add(tf.matmul(v,self.W), self.bh)
             p_h_v=tf.nn.sigmoid(a)
-    
-            bernouille_dis=tf.where(tf.less(p_h_v, tf.random_uniform(shape=[self.FLAGS.batch_size,self.FLAGS.num_h],minval=0.0,maxval=1.0)),
-                                    x=tf.zeros_like(p_h_v),
-                                    y=tf.ones_like(p_h_v))
-            return p_h_v, bernouille_dis
+            h_=self._bernouille_sampling(p_h_v, shape=[self.FLAGS.batch_size, int(p_h_v.shape[-1])])
+            
+            return p_h_v, h_
         
     
     def _sample_v(self, h):
@@ -54,14 +52,12 @@ class RBM:
         with tf.name_scope('sampling_visible_units'):
             a=tf.nn.bias_add(tf.matmul(h,tf.transpose(self.W, [1,0])), self.bv)
             p_v_h=tf.nn.sigmoid(a)
-    
-            bernouille_dis=tf.where(tf.less(p_v_h, tf.random_uniform(shape=[self.FLAGS.batch_size,self.FLAGS.num_v],minval=0.0,maxval=1.0)),
-                                    x=tf.zeros_like(p_v_h),
-                                    y=tf.ones_like(p_v_h))
-            return p_v_h, bernouille_dis
-    
-    
-    def _optimize(self, v):
+            v_=self._bernouille_sampling(p_v_h, shape=[self.FLAGS.batch_size, int(p_v_h.shape[-1])])
+            
+            return p_v_h, v_
+        
+
+    def optimize(self, v):
         ''' Optimization step. Does Gibbs sampling, calculates gradiends and produces update operations.
          Also calculates accuracy the training data.
         
@@ -84,27 +80,21 @@ class RBM:
             
         return update_op, acc
     
-    def _inference(self, v):
+    def inference(self, v):
         '''Inference step. Visible training nodes are given to activate the hidden neurons. Hidden neurons are then used 
         to activate visible neurons.
         
         @param v: visible nodes
         @return sampled visible neurons (value 1 or 0 accroding to Bernouille distribution)
         '''
-        
         p_h_v=tf.nn.sigmoid(tf.nn.bias_add(tf.matmul(v,self.W), self.bh))
-        bernouille_dis=tf.where(tf.less(p_h_v, tf.random_uniform(shape=[1,self.FLAGS.num_h],minval=0.0,maxval=1.0)),
-                                x=tf.zeros_like(p_h_v),
-                                y=tf.ones_like(p_h_v))
+        h_=self._bernouille_sampling(p_h_v, shape=[1,int(p_h_v.shape[-1])])
         
-       
-        p_v_h=tf.nn.sigmoid(tf.nn.bias_add(tf.matmul(bernouille_dis,tf.transpose(self.W, [1,0])), self.bv))
+        p_v_h=tf.nn.sigmoid(tf.nn.bias_add(tf.matmul(h_,tf.transpose(self.W, [1,0])), self.bv))
+        v_=self._bernouille_sampling(p_v_h, shape=[1,int(p_v_h.shape[-1])])
+        
+        return v_
     
-        bernouille_dis=tf.where(tf.less(p_v_h, tf.random_uniform(shape=[1,self.FLAGS.num_v],minval=0.0,maxval=1.0)),
-                                x=tf.zeros_like(p_v_h),
-                                y=tf.ones_like(p_v_h))
-        return bernouille_dis
-        
     
     def _update_parameter(self,dW,db_h,db_v):
         ''' Creating TF assign operations. Updated weight and bias values are replacing old parameter values.
@@ -125,18 +115,20 @@ class RBM:
         ''' Computing the gradients of the weights and bias terms with Contrastive Divergence.
         
         @param v0: visible neurons before gibbs sampling
-        @param vk: visible neurons before gibbs sampling
+        @param vk: visible neurons after gibbs sampling
         @param ph0: probability that hidden neurons are activated before gibbs sampling.
         @param phk: probability that hidden neurons are activated after gibbs sampling.
         
         @return gradients of the network parameters
         
         '''
-
+        
+        #end condition for the while loop
         def condition(i, v0, vk, ph0, phk, dW,db_h,db_v):
             r=tf.less(i,k)
             return r[0]
         
+        #loop body
         def body(i, v0, vk, ph0, phk, dW,dbh,dbv):
             
             v0_=v0[i]
@@ -145,12 +137,13 @@ class RBM:
             vk_=vk[i]
             phk_=phk[i]       
             
+            #reshaping for making the outer product possible
             ph0_=tf.reshape(ph0_, [1,self.FLAGS.num_h])
             v0_=tf.reshape(v0_, [self.FLAGS.num_v,1])
-            
             phk_=tf.reshape(phk_, [1,self.FLAGS.num_h])
             vk_=tf.reshape(vk_, [self.FLAGS.num_v,1])
             
+            #calculating the gradiends for weights and biases
             dw_=tf.subtract(tf.multiply(ph0_, v0_),tf.multiply(phk_, vk_))
             dbh_=tf.subtract(ph0_,phk_)
             dbv_=tf.subtract(v0_,vk_)
@@ -160,21 +153,25 @@ class RBM:
             
             return [i+1, v0, vk, ph0, phk,tf.add(dW,dw_),tf.add(dbh,dbh_),tf.add(dbv,dbv_)]
         
-        i = 0
+        i = 0 # start counter for the while loop
+        k=tf.constant([self.FLAGS.batch_size]) # number for the end condition of the while loop
         
-        k=tf.constant([self.FLAGS.batch_size])
+        #init empty placeholders wherer the gradients will be stored              
         dW=tf.zeros((self.FLAGS.num_v, self.FLAGS.num_h))
         dbh=tf.zeros((self.FLAGS.num_h))
         dbv=tf.zeros((self.FLAGS.num_v))
         
+        #iterate over the batch and compute for each sample a gradient
         [i, v0, vk, ph0, phk, dW,db_h,db_v]=tf.while_loop(condition, body,[i, v0, vk, ph0, phk, dW,dbh,dbv])
           
+        #devide the summed gradiends by the batch size
         dW=tf.div(dW, self.FLAGS.batch_size)
         dbh=tf.div(dbh, self.FLAGS.batch_size)
         dbv=tf.div(dbv, self.FLAGS.batch_size)
         
         return dW,dbh,dbv
         
+    
     def _gibbs_sampling(self, v):
         ''' Perfroming the gibbs sampling.
         
@@ -185,10 +182,12 @@ class RBM:
         @return probability that hidden neurons are activated after gibbs sampling.
         '''
  
+        #end condition for the while loop
         def condition(i, vk, hk,v):
             r= tf.less(i,k)
             return r[0]
         
+        #loop body
         def body(i, vk, hk,v):
             
             _,hk=self._sample_h(vk)
@@ -203,8 +202,8 @@ class RBM:
         vk=v
         hk=tf.zeros_like(ph0)
             
-        i = 0
-        k=tf.constant([self.FLAGS.k])
+        i = 0 # start counter for the while loop
+        k=tf.constant([self.FLAGS.k]) # number for the end condition of the while loop
         
         [i, vk,hk,v]=tf.while_loop(condition, body,[i, vk,hk,v])
         
@@ -212,10 +211,22 @@ class RBM:
         
         return v, vk,ph0, phk, i
         
+    
+    def _bernouille_sampling(self,p, shape):
+        '''Samples from the Bernoulli distribution
+        
+        @param p: probability 
+        @return samples from Bernoulli distribution
+        
+        '''
+        return tf.where(tf.less(p, tf.random_uniform(shape,minval=0.0,maxval=1.0)),
+                        x=tf.zeros_like(p),
+                        y=tf.ones_like(p))
         
         
         
         
+    
         
         
         

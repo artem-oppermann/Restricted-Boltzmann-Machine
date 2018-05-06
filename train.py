@@ -3,10 +3,10 @@ from data.dataset import _get_training_data, _get_test_data
 from rbm_model import RBM
 import numpy as np
 
-tf.app.flags.DEFINE_string('tf_records_train_path', 'C:/Users/Admin/Desktop/deep_learning _local_datasets/colaborative filtering/tf_records_1M/train/',
+tf.app.flags.DEFINE_string('tf_records_train_path', 'data/tf_records_1M/train/',
                            'Path of the training data.')
 
-tf.app.flags.DEFINE_string('tf_records_test_path', 'C:/Users/Admin/Desktop/deep_learning _local_datasets/colaborative filtering/tf_records_1M/test/',
+tf.app.flags.DEFINE_string('tf_records_test_path', 'data/tf_records_1M/train/',
                            'Path of the test data.')
 
 tf.app.flags.DEFINE_integer('num_epoch', 1000,
@@ -27,10 +27,10 @@ tf.app.flags.DEFINE_integer('num_h', 200,
 tf.app.flags.DEFINE_integer('num_samples', 6039,
                             'Number of training samples (Number of users, who gave a rating).')
 
-tf.app.flags.DEFINE_integer('k', 5,
+tf.app.flags.DEFINE_integer('k', 10,
                            'Number of iterations during gibbs samling.')
 
-tf.app.flags.DEFINE_integer('eval_after',25,
+tf.app.flags.DEFINE_integer('eval_after',50,
                             'Evaluate model after number of iterations.')
 
 FLAGS = tf.app.flags.FLAGS
@@ -56,8 +56,8 @@ def main(_):
         
         model=RBM(FLAGS)
 
-        update_op, accuracy=model._optimize(x_train)
-        v_infer=model._inference(x_train_infer)
+        update_op, accuracy=model.optimize(x_train)
+        v_infer=model.inference(x_train_infer)
  
         with tf.Session() as sess:
             
