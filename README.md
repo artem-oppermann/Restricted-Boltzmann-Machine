@@ -16,11 +16,13 @@ The current version support only the MovieLens ml-1m.zip dataset obtained from h
 
 - Download the ml-1m.zip dataset from https://grouplens.org/datasets/movielens/.
 
-- Save ratings.dat under DATA_DIR. Devide the ratings.dat into training and testing datasets train.dat and test.dat with the shell command:
-` python train_test_split.py DATA_DIR OUTPUT_DIR_TRAIN OUTPUT_DIR_TEST`
+- Save ratings.dat under DATA_DIR. Devide the ratings.dat into training and testing datasets train.dat and test.dat with the shell command: 
+
+         python train_test_split.py DATA_DIR OUTPUT_DIR_TRAIN OUTPUT_DIR_TEST
 
 - Use shell to make TF_Record files out of the both train.dat and test.dat files by executing the command:
-`python tf_record_writer.py OUTPUT_DIR_TF_TRAIN OUTPUT_DIR_TF_TEST`
+        
+        python tf_record_writer.py OUTPUT_DIR_TF_TRAIN OUTPUT_DIR_TF_TEST
 
 - Use shell to start the training by executing the command (optionally parse your hyperparameters):
 
