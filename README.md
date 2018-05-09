@@ -1,5 +1,7 @@
 # Restricted-Boltzmann-Machine
-Restricted Boltzmann Machine implemented for collaborative filtering of movies.
+Collaborative Filtering is a method used by recommender systems to make predictions about an interest of an specific user by collecting taste or preferences information from many other users. The technique of Collaborative Filtering has the underlying assumption that if a user A has the same taste or opinion on an issue as the person B, A is more likely to have B’s opinion on a different issue. 
+
+In this project I predict the ratings a user would give a movie based on this user's taste and the taste of other users who watched and rated the same and similar movies.
 
 
     epoch_nr: 0, batch: 50/188, acc_train: 0.721, acc_test: 0.709
