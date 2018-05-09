@@ -58,8 +58,7 @@ class RBM:
         
 
     def optimize(self, v):
-        ''' Optimization step. Does Gibbs sampling, calculates gradiends and produces update operations.
-         Also calculates accuracy the training data.
+        ''' Optimization step. Gibbs sampling, calculating of gradients and doing an update operation.
         
         @param v: visible nodes
         @return update operation
@@ -78,11 +77,12 @@ class RBM:
             n_values=tf.reduce_sum(mask)
             acc=tf.subtract(1.0,tf.div(tf.reduce_sum(acc), n_values))
             
+            
         return update_op, acc
     
     def inference(self, v):
-        '''Inference step. Visible training nodes are given to activate the hidden neurons. Hidden neurons are then used 
-        to activate visible neurons.
+         '''Inference step. Training samples are used to activate the hidden neurons which are used for calculation of input neuron values.
+        This new input values are the prediction, for already rated movies as well as not yet rated movies
         
         @param v: visible nodes
         @return sampled visible neurons (value 1 or 0 accroding to Bernouille distribution)
