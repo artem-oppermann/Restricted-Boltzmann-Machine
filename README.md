@@ -1,8 +1,28 @@
 # Restricted-Boltzmann-Machine
 Collaborative Filtering is a method used by recommender systems to make predictions about an interest of an specific user by collecting taste or preferences information from many other users. The technique of Collaborative Filtering has the underlying assumption that if a user A has the same taste or opinion on an issue as the person B, A is more likely to have B’s opinion on a different issue. 
 
-In this project I predict the ratings a user would give a movie based on this user's taste and the taste of other users who watched and rated the same and similar movies.
+In this project I use a Restricted Boltzmann to predict whether a user would like a movie or not based on this user's taste and the taste of other users who watched and rated the same and similar movies.
 
+# Prerequisites
+- Python 3.6
+- TensorFlow 1.5 or higher
+- NumPy 1.11 or higher
+
+# Datasets
+
+The current version support only the MovieLens ml-1m.zip dataset obtained from https://grouplens.org/datasets/movielens/.
+
+# How to Use
+
+- Download the ml-1m.zip dataset from https://grouplens.org/datasets/movielens/.
+
+- Devide the ratings.dat file from ml-1m.zip into training and testing datasets train.dat and test.dat with 
+`train_test_split.py`. Save them under ROOT_DIR/ml-1m/..
+
+- Use shell to start the training by executing the command (optionally parse your hyperparameters):
+    python train.py \
+             --tf_records_train_path=OUTPUT_DIR_TRAIN \
+             --tf_records_test_path=OUTPUT_DIR_TEST \
 
     epoch_nr: 0, batch: 50/188, acc_train: 0.721, acc_test: 0.709
     epoch_nr: 0, batch: 100/188, acc_train: 0.744, acc_test: 0.704
