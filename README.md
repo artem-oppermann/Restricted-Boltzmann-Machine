@@ -23,9 +23,10 @@ The current version support only the MovieLens ml-1m.zip dataset obtained from h
 `python tf_record_writer.py OUTPUT_DIR_TF_TRAIN OUTPUT_DIR_TF_TEST`
 
 - Use shell to start the training by executing the command (optionally parse your hyperparameters):
-    `python train.py \
+
+        python train.py \
              --tf_records_train_path=OUTPUT_DIR_TF_TRAIN \
-             --tf_records_test_path=OUTPUT_DIR_TF_TEST \`
+             --tf_records_test_path=OUTPUT_DIR_TF_TEST \
 
     epoch_nr: 0, batch: 50/188, acc_train: 0.721, acc_test: 0.709
     epoch_nr: 0, batch: 100/188, acc_train: 0.744, acc_test: 0.704
