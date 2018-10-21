@@ -90,6 +90,6 @@ During the training process we can examine the progress of the accuracy on train
 | Weather        | Temperature / °C   | Day of the week  | Swimming pool visitors    |
 | -------------  |:-------------:| -----:|-----:|
 | Sunny          | 19            |   Saturday |  350      |
-| Cloudy         | 30            |   Wednesday|   120      |
+| Cloudy         | 30            |   Friday|   120      |
 | Rainy          | 24            |    Sunday |   280    |
 | Cloudy         | 27           |    Saturday |   ?    |
