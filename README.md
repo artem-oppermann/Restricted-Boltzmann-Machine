@@ -92,4 +92,4 @@ During the training process we can examine the progress of the accuracy on train
 | Sunny          | 19            |   Saturday |  350      |
 | Cloudy         | 30            |   Friday|   120      |
 | Rainy          | 24            |    Sunday |   280    |
-| Cloudy         | 27           |    Saturday |   ?    |
+| Cloudy         | 27           |    Saturday |   **?    |
