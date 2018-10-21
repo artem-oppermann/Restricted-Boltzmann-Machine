@@ -87,11 +87,3 @@ During the training process we can examine the progress of the accuracy on train
              epoch_nr: 16, batch: 150/188, acc_train: 0.767, acc_test: 0.786
              
     
-| Weather        | Temperature / °C   | Day of the week  | Swimming pool visitors    |
-| -------------  |:-------------:| -----:|-----:|
-| Sunny          | 12            |   Saturday |  350      |
-| Cloudy         | 30            |   Friday|   450      |
-| Rainy          | 7            |    Wednesday |   25    |
-| Rainy          | 22            |    Sunday |   75    |
-| Sunny          | 15            |    Monday |   350    |
-| Cloudy         | 29           |    Thursday |   ?    |
