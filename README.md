@@ -85,4 +85,10 @@ During the training process we can examine the progress of the accuracy on train
              epoch_nr: 16, batch: 50/188, acc_train: 0.783, acc_test: 0.790
              epoch_nr: 16, batch: 100/188, acc_train: 0.766, acc_test: 0.787
              epoch_nr: 16, batch: 150/188, acc_train: 0.767, acc_test: 0.786
+             
     
+| Tables        | Are           | Cool  | sd    |
+| ------------- |:-------------:| -----:|-----:
+| col 3 is      | right-aligned | $1600 |     |
+| col 2 is      | centered      |   $12 |     |
+| zebra stripes | are neat      |    $1 |     |
