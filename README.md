@@ -87,11 +87,3 @@ During the training process we can examine the progress of the accuracy on train
              epoch_nr: 16, batch: 150/188, acc_train: 0.767, acc_test: 0.786
              
     
-| x1        | x2   | x3  | x4    | 
-| -------------  |:-------------:| -----:|-----:|
-| 15240          | 253            |   682 |  0.012      |
-| 102            | -0.20            |   10|   23      |
-| 10102          | 201            |    452 |   0.21    |
-| 12425          | 120            |    682 |   0.201    |
-| 354            | 15            |    4523 |   -0.230    |
-| 3501           | 174           |    754 |   0.001    |
